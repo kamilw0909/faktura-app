@@ -34,10 +34,10 @@ class Invoice(models.Model):
         ('gotówka', 'gotówka'),
     )
     invoice_number = models.CharField(  'Numer faktury', max_length=7,
-                                        default=f'/{datetime.datetime.now().strftime("%Y")}',
+                                        default='{}'.format(datetime.datetime.now().strftime('/%Y')),
                                         unique=True)
     invoice_date = models.CharField('Data i miejsce wystawienia', max_length=20,
-                                    default=f'Warszawa, {datetime.datetime.now().strftime("%Y-%m-%d")}')
+                                    default='Warszawa, {}'.format(datetime.datetime.now().strftime('%Y-%m-%d')))
     invoice_sale_date = models.DateField('Data sprzedaży', default=timezone.now)
     invoice_payment_date = models.DateField('Termin płatności', default=one_month_hence)
     payment = models.CharField('Płatność', max_length=10,
@@ -55,7 +55,7 @@ class Invoice(models.Model):
         sum = 0
         for item in self.item_set.all():
             sum += item.quantity * item.price
-        return f'{sum:.2f}'
+        return '{:.2f}'.format(sum)
 
     def __str__(self):
         return self.invoice_number
