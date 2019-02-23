@@ -1,0 +1,155 @@
+{% extends 'invoices/base.html' %}
+
+{% block title %}{{invoice.invoice_number}}{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active" aria-current="page">{{ invoice.invoice_number }}</li>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col">
+    <!-- wiersz z danymi faktury -->
+      <div class="row">
+        <div class="col">
+          <p>
+            Faktura nr {{ invoice.invoice_number }}
+            <br>
+            Data wystawienia: {{ invoice.invoice_date}}
+            <br>
+            Data sprzedaży: {{ invoice.invoice_sale_date|date:'Y-m-d' }}
+            <br>
+            Termin płatności: {{ invoice.invoice_payment_date|date:'Y-m-d' }}
+            <br>
+            Płatność: {{ invoice.payment }}
+          </p>
+        </div>
+      </div>
+      <hr>
+  <!-- wiersz sprzedawcy i kupującego -->
+      <div class="row">
+    <!-- kolumna sprzedawcy -->
+        <div class="col-6">
+          <p>
+            <strong>Sprzedawca</strong>
+            <br>
+            {{ invoice.invoice_s_fk.name }}
+            <br>
+            {{ invoice.invoice_s_fk.adress }}
+            <br>
+            {{ invoice.invoice_s_fk.postal_code }}
+            <br>
+            NIP: {{ invoice.invoice_s_fk.nip }}
+            <br>
+            Nazwa banku: {{ invoice.invoice_s_fk.bank_name }}
+            <br>
+            Numer konta: {{ invoice.invoice_s_fk.account_nr }}
+          </p>
+        </div>
+    <!-- kolumna kupującego -->
+        <div class="col-6">
+          <p>
+            <strong>Kupujący</strong>
+            <br>
+            {{ invoice.invoice_b_fk.name }}
+            <br>
+            {{ invoice.invoice_b_fk.adress }}
+            <br>
+            {{ invoice.invoice_b_fk.postal_code }}
+            <br>
+            NIP: {{ invoice.invoice_b_fk.nip }}
+            <br>
+            Nazwa banku: {{ invoice.invoice_b_fk.bank_name }}
+            <br>
+            Numer konta: {{ invoice.invoice_b_fk.account_nr }}
+          </p>
+        </div>
+      </div>
+<!-- tabela z usługami -->
+<div class="row">
+  <div class="col">
+    <div class="form-group row">
+      <div class="table-responsive">
+        <table class="table table-hover table-sm">
+          <thead>
+            <tr>
+              <th scope="col">Lp</th>
+              <th scope="col">Nazwa</th>
+              <th scope="col">Ilość</th>
+              <th scope="col">Cena</th>
+              <th scope="col">Jednostka</th>
+              <th scope="col">Wartość</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in invoice.item_set.all %}
+            <tr>
+              <td>{{ forloop.counter }}.</td>
+              <td>{{ item.product }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.price }}zł</td>
+              <td>{{ item.unit }}</td>
+              <td>
+                {{ item.item_sum }}zł
+              </td>
+            </tr>
+            {% endfor %}
+            <tr>
+              <td colspan="3"><td>
+              <td class="text-right"><strong>Razem:</strong></td>
+              <td><strong>{{ invoice.invoice_sum }}zł</strong></td>
+            </tr>
+            <tr>
+              <td colspan="3"><td>
+              <td class="text-right"><strong>Wartość:</strong></td>
+              <td><strong>{{ invoice.invoice_sum }}PLN</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- wiersz uwagi -->
+      <div class="row">
+        <div class="col-1">
+          <p><strong>Uwagi:</strong></p>
+        </div>
+        <div class="col-11">
+            <p>{{ invoice.comments }}</p>
+            <p><small>Sprzedawca zwolniony podmiotowo z podatku od towarów i usług.
+                Dostawa towarów lub świadczenie usług zwolnione na podstawie art. 113 ust. 1 (albo ust. 9)
+                ustawy z dnia 11 marca 2004 o podatku od towarów i usług (Dz. U. Z 2011r. Nr 177 poz. 1054 z późn.
+                Zmianami).</small>
+            </p>
+          </div>
+      </div>
+    <!-- wiersz do zapłaty -->
+    <div class="row">
+        <div class="col-1">
+          <p><strong>Do zapłaty:</strong></p>
+        </div>
+        <div class="col-11">
+            <p>{{ invoice.invoice_sum }}zł</p>
+            <p>Słownie: {{ zlotowki }} zł {{ grosze }} gr</p>
+          </div>
+      </div>
+    <!-- wiersz podpis -->
+        <div class="row justify-content-end">
+            <div class="col-2">
+              <strong>Imię i nazwisko:</strong>
+              <br>
+              {{invoice.sign}}
+            </div>
+          </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block akcje %}
+<div class="col">
+  <a class="btn btn-outline-info" href="{% url 'admin:index' %}invoice/invoice/{{invoice.id}}/change">Edytuj fakturę</a>
+</div>
+{% endblock %}
