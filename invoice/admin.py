@@ -10,6 +10,7 @@ class ItemInline(admin.TabularInline):
     verbose_name = 'Usługi'
     verbose_name_plural = 'Usługi'
 
+
 @admin.register(Invoice)
 class InvoiceAdmin(admin.ModelAdmin):
     
@@ -35,7 +36,8 @@ class InvoiceAdmin(admin.ModelAdmin):
     list_filter = ('invoice_number', 'invoice_date', 'invoice_s_fk')
     date_hierarchy = 'invoice_sale_date'
     ordering = ['invoice_sale_date']
-    
+
+
 @admin.register(Seller)
 class SellerAdmin(admin.ModelAdmin):
     list_display = ('name', 'adress', 'postal_code', 'nip')
