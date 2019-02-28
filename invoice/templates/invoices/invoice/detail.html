@@ -150,6 +150,7 @@
 
 {% block akcje %}
 <div class="col">
-  <a class="btn btn-outline-info" href="{% url 'admin:index' %}invoice/invoice/{{invoice.id}}/change">Edytuj fakturę</a>
+  <a class="btn btn-outline-info" href="{% url 'invoice:edit' invoice.id %}">Edytuj fakturę</a>
+  <!--<a class="btn btn-outline-info" href="{% url 'admin:index' %}invoice/invoice/{{invoice.id}}/change">Edytuj fakturę</a>-->
 </div>
 {% endblock %}

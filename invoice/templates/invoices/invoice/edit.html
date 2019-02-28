@@ -1,0 +1,23 @@
+{% extends 'invoices/base.html' %}
+
+{% block title %}{{invoice.invoice_number}}{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active" aria-current="page">{{ invoice.invoice_number }}</li>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col">
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block akcje %}
+<div class="col">
+  <a class="btn btn-outline-info" href="#">Zapisz</a>
+</div>
+{% endblock %}

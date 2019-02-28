@@ -40,7 +40,8 @@
 
     <div class="row d-print-none justify-content-between">
       <div class="col">
-        <a href="{% url 'admin:index' %}invoice/invoice/add/" class="btn btn-outline-success">Nowa faktura</a>
+        <a href="{% url 'invoice:new_invoice' %}" class="btn btn-outline-success">Nowa faktura</a>
+        <!--<a href="{% url 'admin:index' %}invoice/invoice/add/" class="btn btn-outline-success">Nowa faktura</a>-->
       </div>
       {% block akcje %}
       {% endblock %}

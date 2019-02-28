@@ -1,15 +1,16 @@
 from django.shortcuts import render, get_object_or_404
+from django.views import generic
 
 from .to_word import main
 from .models import Invoice
 
 
-def index(request):
-    invoices = Invoice.objects.all()
-    context = {'invoices': invoices}
-    return render(request,
-                  'invoices/invoice/index.html',
-                  context)
+class IndexView(generic.ListView):
+    template_name = 'invoices/invoice/index.html'
+    context_object_name = 'invoices'
+
+    def get_queryset(self):
+        return Invoice.objects.all()
 
 
 def detail(request, invoice_id):
@@ -23,3 +24,15 @@ def detail(request, invoice_id):
     return render(request,
                   'invoices/invoice/detail.html',
                   {'invoice': invoice, 'zlotowki': zlotowki, 'grosze': grosze})
+
+
+def edit(request, invoice_id):
+    invoice = get_object_or_404(Invoice, pk=invoice_id)
+    return render(request,
+                  'invoices/invoice/edit.html',
+                  {'invoice': invoice})
+
+
+def new_invoice(request):
+    return render(request,
+                  'invoices/invoice/new.html')
