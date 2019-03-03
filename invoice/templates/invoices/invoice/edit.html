@@ -1,4 +1,5 @@
 {% extends 'invoices/base.html' %}
+{% load widget_tweaks %}
 
 {% block title %}{{invoice.invoice_number}}{% endblock %}
 
@@ -9,7 +10,49 @@
 {% block content %}
 
 <div class="row">
-  <div class="col">
+  <div class="col-12 col-lg-11 col-xl-10">
+    <form>{% csrf_token %}
+      {% for field in form_invoice %}
+        {% if field.label == 'Uwagi' %}
+          <!--Produkty-->
+          <div class="table-responsive mr-2 ml-2">
+            <table class="table table-hover table-sm">
+              <thead>
+                <tr>
+                  <th scope="col">Nazwa</th>
+                  <th scope="col">Ilość</th>
+                  <th scope="col">Cena</th>
+                  <th scope="col">Jednostka</th>
+                  <th scope="col"><i class="far fa-trash-alt"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+              {{ formset_item.managment_form }}
+              {% for form in formset_item.forms %}
+                <tr>
+                  <td>{{ form.product|add_class:"form-control" }}</td>
+                  <td>{{ form.quantity|add_class:"form-control" }}</td>
+                  <td>{{ form.price|add_class:"form-control" }}</td>
+                  <td>{{ form.unit|add_class:"form-control" }}</td>
+                  <td>
+                    {% if formset_item.can_delete%}
+                      {{ form.DELETE }}
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% endif %}
+        <div class="form-group row">
+          <label class="col-12 col-md-4 col-lg-3 col-xl-2 col-form-label">{{field.label}}</label>
+          <div class="col-12 col-md-8 col-lg-7 col-xl-6">
+            {{ field|add_class:"form-control" }}
+          </div>
+        </div>
+      {% endfor %}
+    </form>
 
   </div>
 </div>
@@ -17,7 +60,5 @@
 {% endblock %}
 
 {% block akcje %}
-<div class="col">
   <a class="btn btn-outline-info" href="#">Zapisz</a>
-</div>
 {% endblock %}

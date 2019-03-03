@@ -1,4 +1,5 @@
 {% extends 'invoices/base.html' %}
+{% load widget_tweaks %}
 
 {% block title %}{{invoice.invoice_number}}{% endblock %}
 
@@ -9,7 +10,105 @@
 {% block content %}
 
 <div class="row">
-  <div class="col">
+  <div class="col-12 col-lg-9 col-xl-10">
+    <form>{% csrf_token %}
+      {% for field in form_invoice %}
+      {% if field.label == 'Uwagi' %}
+      <!--Produkty-->
+      <!--<div class="table-responsive mr-2 ml-2">-->
+        <!--<table class="table table-hover table-sm">-->
+          <!--<thead>-->
+          <!--<tr>-->
+            <!--<th scope="col">Nazwa</th>-->
+            <!--<th scope="col">Ilość</th>-->
+            <!--<th scope="col">Cena</th>-->
+            <!--<th scope="col">Jednostka</th>-->
+            <!--<th scope="col"><i class="far fa-trash-alt"></i></th>-->
+          <!--</tr>-->
+          <!--</thead>-->
+          <!--<tbody>-->
+          <!--{{ formset_item.managment_form }}-->
+          <!--{% for form in formset_item.forms %}-->
+          <!--<tr>-->
+            <!--<td>{{ form.product|add_class:"form-control" }}</td>-->
+            <!--<td>{{ form.quantity|add_class:"form-control" }}</td>-->
+            <!--<td>{{ form.price|add_class:"form-control" }}</td>-->
+            <!--<td>{{ form.unit|add_class:"form-control" }}</td>-->
+            <!--<td>-->
+              <!--{% if formset_item.can_delete%}-->
+              <!--{{ form.DELETE }}-->
+              <!--{% endif %}-->
+            <!--</td>-->
+          <!--</tr>-->
+          <!--{% endfor %}-->
+          <!--</tbody>-->
+        <!--</table>-->
+      <!--</div>-->
+        <hr>
+          {{ formset_item.managment_form }}
+          {% for form in formset_item.forms %}
+          <div class="row mb-2 mt-2">
+            <div class="col-12 col-sm-12 col-md-5">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="far fa-edit"></i>
+                  </span>
+                </div>
+                {{ form.product|add_class:"form-control" }}
+              </div>
+
+            </div>
+            <div class="col-6 col-sm-3 col-md-2">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <strong>+/-</strong>
+                  </span>
+                </div>
+                {{ form.quantity|add_class:"form-control" }}
+              </div>
+            </div>
+            <div class="col-6 col-sm-3 col-md-2">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-dollar-sign"></i>
+                  </span>
+                </div>
+                {{ form.price|add_class:"form-control" }}
+              </div>
+            </div>
+            <div class="col-6 col-sm-5 col-md-2">
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <small>Jedn.</small>
+                  </span>
+                </div>
+                {{ form.unit|add_class:"form-control" }}
+              </div>
+            </div>
+            {% if formset_item.can_delete%}
+            <div class="col-6 col-sm-1 col-md-1 form-check">
+              {{ form.DELETE|add_class:"form-check-input" }}
+              <label class="form-check-label">
+                <i class="far fa-trash-alt"></i>
+              </label>
+            </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+      {% endif %}
+      <div class="form-group row">
+        <label class="col-12 col-md-4 col-lg-3 col-xl-2 col-form-label">{{field.label}}</label>
+        <div class="col-12 col-md-8 col-lg-7 col-xl-6">
+          {{ field|add_class:"form-control" }}
+        </div>
+      </div>
+      {% endfor %}
+    </form>
 
   </div>
 </div>
@@ -17,7 +116,5 @@
 {% endblock %}
 
 {% block akcje %}
-<div class="col">
-  <a class="btn btn-outline-info" href="#">Zapisz</a>
-</div>
+<a class="btn btn-outline-info" href="#">Zapisz</a>
 {% endblock %}

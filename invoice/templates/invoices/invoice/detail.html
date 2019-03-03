@@ -12,13 +12,13 @@
   <div class="col">
     <!-- wiersz z danymi faktury -->
       <div class="row">
-        <div class="col">
+        <div class="col-12 col-md-5 col-lg-4 col-xl-3">
           <p>
             Faktura nr {{ invoice.invoice_number }}
             <br>
             Data wystawienia: {{ invoice.invoice_date}}
             <br>
-            Data sprzedaży: {{ invoice.invoice_sale_date|date:'Y-m-d' }}
+            Data sprzedaży: {{ invoice.invoice_sale_date|date:'Y-m' }}
             <br>
             Termin płatności: {{ invoice.invoice_payment_date|date:'Y-m-d' }}
             <br>
@@ -30,7 +30,7 @@
   <!-- wiersz sprzedawcy i kupującego -->
       <div class="row">
     <!-- kolumna sprzedawcy -->
-        <div class="col-6">
+        <div class="col-sm-12 col-md-6">
           <p>
             <strong>Sprzedawca</strong>
             <br>
@@ -48,7 +48,7 @@
           </p>
         </div>
     <!-- kolumna kupującego -->
-        <div class="col-6">
+        <div class="col-sm-12 col-md-6">
           <p>
             <strong>Kupujący</strong>
             <br>
@@ -67,8 +67,8 @@
         </div>
       </div>
 <!-- tabela z usługami -->
-<div class="row">
-  <div class="col">
+<div class="row mr-2 ml-2">
+  <div class="col-12 col-lg-10">
     <div class="form-group row">
       <div class="table-responsive">
         <table class="table table-hover table-sm">
@@ -85,7 +85,7 @@
           <tbody>
             {% for item in invoice.item_set.all %}
             <tr>
-              <td>{{ forloop.counter }}.</td>
+              <td scope="row">{{ forloop.counter }}.</td>
               <td>{{ item.product }}</td>
               <td>{{ item.quantity }}</td>
               <td>{{ item.price }}zł</td>
@@ -113,31 +113,31 @@
 </div>
     <!-- wiersz uwagi -->
       <div class="row">
-        <div class="col-1">
+        <div class="col-12 col-md-2">
           <p><strong>Uwagi:</strong></p>
         </div>
-        <div class="col-11">
+        <div class="col-12 col-md-9">
             <p>{{ invoice.comments }}</p>
             <p><small>Sprzedawca zwolniony podmiotowo z podatku od towarów i usług.
                 Dostawa towarów lub świadczenie usług zwolnione na podstawie art. 113 ust. 1 (albo ust. 9)
                 ustawy z dnia 11 marca 2004 o podatku od towarów i usług (Dz. U. Z 2011r. Nr 177 poz. 1054 z późn.
                 Zmianami).</small>
             </p>
-          </div>
+        </div>
       </div>
     <!-- wiersz do zapłaty -->
     <div class="row">
-        <div class="col-1">
+        <div class="col-12 col-md-2">
           <p><strong>Do zapłaty:</strong></p>
         </div>
-        <div class="col-11">
+        <div class="col-12 col-md-9">
             <p>{{ invoice.invoice_sum }}zł</p>
             <p>Słownie: {{ zlotowki }} zł {{ grosze }} gr</p>
           </div>
       </div>
     <!-- wiersz podpis -->
         <div class="row justify-content-end">
-            <div class="col-2">
+            <div class="col-6 col-sm-4 col-md-3">
               <strong>Imię i nazwisko:</strong>
               <br>
               {{invoice.sign}}
@@ -149,8 +149,6 @@
 {% endblock %}
 
 {% block akcje %}
-<div class="col">
   <a class="btn btn-outline-info" href="{% url 'invoice:edit' invoice.id %}">Edytuj fakturę</a>
   <!--<a class="btn btn-outline-info" href="{% url 'admin:index' %}invoice/invoice/{{invoice.id}}/change">Edytuj fakturę</a>-->
-</div>
 {% endblock %}
