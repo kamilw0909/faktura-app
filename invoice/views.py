@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
-from django.forms import inlineformset_factory, modelformset_factory
+from django.http import HttpResponseRedirect
 
 from .to_word import main
 from .models import Invoice, Item
@@ -38,8 +38,18 @@ def edit(request, invoice_id):
 
 
 def new_invoice(request):
-    form_invoice = InvoiceForm()
-    formset_item = ItemFormSet()
+    if request.method == 'POST':
+        form_invoice = InvoiceForm(request.POST)
+        if form_invoice.is_valid():
+            form = form_invoice.save(commit=False)
+        formset_item = ItemFormSet(request.POST, request.FILES, instance=form)
+        if formset_item.is_valid():
+            form_invoice.save()
+            formset_item.save()
+            return HttpResponseRedirect('/')
+    else:
+        form_invoice = InvoiceForm()
+        formset_item = ItemFormSet()
     return render(request,
                   'invoices/invoice/new.html',
                   {'form_invoice': form_invoice, 'formset_item': formset_item})

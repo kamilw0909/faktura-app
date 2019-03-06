@@ -9,7 +9,7 @@
 
 {% block content %}
 
-<div class="row">
+<div class="row mb-3">
   <div class="col-12 col-lg-11 col-xl-10">
     <form>{% csrf_token %}
       {% for field in form_invoice %}
@@ -52,13 +52,10 @@
           </div>
         </div>
       {% endfor %}
+      <button type="submit" class="btn btn-primary">Zapisz</button>
     </form>
 
   </div>
 </div>
 
-{% endblock %}
-
-{% block akcje %}
-  <a class="btn btn-outline-info" href="#">Zapisz</a>
 {% endblock %}
