@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 from .forms import LoginForm
 
@@ -15,7 +15,7 @@ def user_login(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return HttpResponse('Zalogowano z sukcesem')
+                return redirect('/')
             else:
                 return HttpResponse('Konto jest zablokowane')
         else:
@@ -23,4 +23,10 @@ def user_login(request):
     else:
         form = LoginForm()
     return render(request, 'account/login.html', {'form': form})
+
+
+def user_logout(request):
+    logout(request)
+    return render(request, 'account/logged_out.html')
+
 

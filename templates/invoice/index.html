@@ -1,4 +1,4 @@
-{% extends 'invoices/base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Moje faktury{% endblock %}
 
@@ -36,7 +36,9 @@
                 </td>
                 <td>
                     <button type="button" class="btn btn-link">
-                        <i class="fas fa-download"></i>
+                        <a ic-post-to="{% url 'invoice:download' %}" class="btn">
+                            <i class="fas fa-download"></i>
+                        </a>
                     </button>
                 </td>
             </tr>

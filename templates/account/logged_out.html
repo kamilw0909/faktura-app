@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Wylogowanie{% endblock %}
+
+{% block content %}
+
+  <h1 class="display-3">Wylogowanie</h1>
+<p>Zostałeś pomyślnie wylogowany. Możesz <stron><a href="{% url 'account:user_login' %}">zalogować</a></stron> się ponownie.</p>
+
+{% endblock %}

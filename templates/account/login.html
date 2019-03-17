@@ -4,34 +4,49 @@
 {% block title %}Logowanie{% endblock %}
 
 {% block breadcrumb %}
-<li class="breadcrumb-item active" aria-current="page">Logowanie</li>
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-sign-in-alt"></i></li>
 {% endblock %}
 
 {% block content %}
+  <div class="row">
+  <div class="col">
+    <h1 class="display-4">Logowanie</h1>
+  </div>
+  </div>
 
+  {% if form.errors %}
+    <div class="row">
+      <div class="col">
+        <div class="alert alert-warning" role="alert">
+          Nazwa użytkownika lub hasło są nieprawidłowe. Spróbuj ponownie.
+        </div>
+      </div>
+    </div>
+  {% else %}
   <div class="row">
     <div class="col">
-      <h1 class="display-4">Logowanie</h1>
       <p>Wypełnij aby zalogować się:</p>
     </div>
   </div>
+  {% endif %}
   <div class="row">
     <div class="col">
       <form action="{% url 'account:user_login' %}" method="post">
-        {% csrf_token %}
         <div class="form-group row">
-          <label for="login" class="col-sm-2 col-form-label">Login</label>
+          <label class="col-sm-2 col-form-label">Login</label>
           <div class="col-sm-6">
             {{ form.username|add_class:"form-control" }}
           </div>
         </div>
         <div class="form-group row">
-          <label for="login" class="col-sm-2 col-form-label">Hasło</label>
+          <label class="col-sm-2 col-form-label">Hasło</label>
           <div class="col-sm-6">
             {{ form.password|add_class:"form-control" }}
           </div>
         </div>
         <div class="form-group row">
+        {% csrf_token %}
+          <input type="hidden" name="next" value="{{ next }}">
           <div class="col-sm-2 mt-2">
             <button type="submit" class="btn btn-primary">Zaloguj się</button>
           </div>
@@ -39,5 +54,4 @@
       </form>
     </div>
   </div>
-
 {% endblock %}
