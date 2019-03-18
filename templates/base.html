@@ -17,51 +17,46 @@
 </head>
 
 <body>
-  <div class="container-fluid">
-    <div class="row d-print-none">
-        <div class="col-5 col-sm-4 col-md-3 col-lg-2 d-flex">
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <a href="/"><i class="fas fa-home text-info"></i></a>
-              </li>
-              {% block breadcrumb %}
-              {% endblock %}
-            </ol>
-          </nav>
-        </div>
-        <div class="col text-right mt-2">
-          {% if request.user.is_authenticated %}
-          Witaj, <strong>{{ request.user.first_name }}</strong>!
-            <a href="{% url 'account:user_logout' %}">Wyloguj</a>
-          {% else %}
-            <strong><a href="{% url 'account:user_login' %}">Zaloguj</a></strong>
-          {% endif %}
-        </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        {% block content %}
+  <nav class="navbar fixed-top navbar-expand-md navbar-light bg-light d-print-none">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a href="/" class="nav-link"><i class="fas fa-home fa-2x"></i></a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'invoice:new_invoice' %}" class="nav-link">Nowa faktura</a>
+        </li>
+        {% block nav %}
         {% endblock %}
-      </div>
+      </ul>
+      <span class="navbar-text">
+        {% if request.user.is_authenticated %}
+        Witaj, {{ request.user.first_name }}!
+        <a href="{% url 'account:user_logout' %}" class="btn btn-light">Wyloguj</a>
+        {% else %}
+        <a href="{% url 'account:user_login' %}" class="btn btn-light">Zaloguj</a>
+        {% endif %}
+      </span>
     </div>
+  </nav>
 
-    <div class="row d-print-none justify-content-between">
-      <div class="col mt-2 mb-2">
-        <a href="{% url 'invoice:new_invoice' %}" class="btn btn-outline-success mr-3">Nowa faktura</a>
-      {% block akcje %}
-      {% endblock %}
-      </div>
+  <div class="container-fluid" style="padding-top:50px;">
 
-    </div>
-    <hr class="d-print-none">
+    {% block content %}
+    {% endblock %}
+
     <div class="row d-print-none">
       <div class="col">
+        <hr>
         <p class="text-center"><small class="text-muted">Aplikacja napisana przy użyciu Django v2.1 i Bootstrap v4</small></p>
       </div>
     </div>
 
-  </div>
+  </div><!--end container-fluid-->
 
   <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -6,9 +6,16 @@
 <li class="breadcrumb-item active" aria-current="page">{{ invoice.invoice_number }}</li>
 {% endblock %}
 
+{% block nav %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'invoice:edit' invoice.id %}">Edytuj</a>
+  </li>
+
+{% endblock %}
+
 {% block content %}
 
-<div class="row">
+<div class="row mt-5">
   <div class="col">
     <!-- wiersz z danymi faktury -->
       <div class="row">
@@ -146,9 +153,4 @@
   </div>
 </div>
 
-{% endblock %}
-
-{% block akcje %}
-  <a class="btn btn-outline-info" href="{% url 'invoice:edit' invoice.id %}">Edytuj fakturę</a>
-  <!--<a class="btn btn-outline-info" href="{% url 'admin:index' %}invoice/invoice/{{invoice.id}}/change">Edytuj fakturę</a>-->
 {% endblock %}

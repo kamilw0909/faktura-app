@@ -1,15 +1,12 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
 
-{% block title %}{{invoice.invoice_number}}{% endblock %}
+{% block title %}Nowa faktura{% endblock %}
 
-{% block breadcrumb %}
-<li class="breadcrumb-item active" aria-current="page"><i class="far fa-newspaper"></i></li>
-{% endblock %}
 
 {% block content %}
 
-<div class="row mb-3">
+<div class="row mt-5">
   <div class="col-12 col-lg-9 col-xl-10">
     <form action="{% url 'invoice:new_invoice' %}" method="post">{% csrf_token %}
       {% for field in form_invoice %}

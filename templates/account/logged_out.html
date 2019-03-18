@@ -4,8 +4,11 @@
 {% block title %}Wylogowanie{% endblock %}
 
 {% block content %}
-
-  <h1 class="display-3">Wylogowanie</h1>
-<p>Zostałeś pomyślnie wylogowany. Możesz <stron><a href="{% url 'account:user_login' %}">zalogować</a></stron> się ponownie.</p>
+<div class="row mt-5">
+  <div class="col text-center">
+    <h1 class="display-4">Wylogowanie</h1>
+    <p>Zostałeś pomyślnie wylogowany. Możesz <stron><a href="{% url 'account:user_login' %}">zalogować</a></stron> się ponownie.</p>
+  </div>
+</div>
 
 {% endblock %}
