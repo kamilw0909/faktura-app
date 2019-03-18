@@ -1,5 +1,4 @@
 from django.contrib import admin
-import datetime
 
 from .models import Seller, Buyer, Item, Invoice
 
@@ -16,8 +15,8 @@ class InvoiceAdmin(admin.ModelAdmin):
     
     fieldsets = (
         ('Dane faktury', {'fields':
-            ('invoice_number', 'invoice_date', 'invoice_sale_date',
-                    'invoice_payment_date', 'payment')
+                        ('invoice_number', 'invoice_date', 'invoice_sale_date',
+                        'invoice_payment_date', 'payment')
         }),
         ('Strony', {'fields':
                     (('invoice_s_fk', 'invoice_b_fk'),)
@@ -40,7 +39,7 @@ class InvoiceAdmin(admin.ModelAdmin):
 
 @admin.register(Seller)
 class SellerAdmin(admin.ModelAdmin):
-    list_display = ('name', 'adress', 'postal_code', 'nip')
+    list_display = ('user', 'name', 'adress', 'postal_code', 'nip')
     ordering = ['name']
 
 

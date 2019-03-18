@@ -1,10 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.utils import timezone
 import datetime
 
 
 class Seller(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField('Nazwa', max_length=100,)
     adress = models.CharField('Ulica i numer', max_length=100)
     postal_code = models.CharField('Kod pocztowy i miejscowość', max_length=100)

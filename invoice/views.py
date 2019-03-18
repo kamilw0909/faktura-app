@@ -13,7 +13,7 @@ class IndexView(generic.ListView):
     context_object_name = 'invoices'
 
     def get_queryset(self):
-        return Invoice.objects.all()
+        return Invoice.objects.filter(invoice_s_fk__user__username=self.request.user)
 
 
 @login_required
