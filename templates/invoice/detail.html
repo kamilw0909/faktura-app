@@ -2,13 +2,15 @@
 
 {% block title %}{{invoice.invoice_number}}{% endblock %}
 
-{% block breadcrumb %}
-<li class="breadcrumb-item active" aria-current="page">{{ invoice.invoice_number }}</li>
-{% endblock %}
-
 {% block nav %}
   <li class="nav-item">
     <a class="nav-link" href="{% url 'invoice:edit' invoice.id %}">Edytuj</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'invoice:download' invoice.id %}">Pobierz</a>
+  </li>
+    <li class="nav-item">
+    <a class="nav-link" id="pdf_window" href="#">Drukuj w przeglądarce</a>
   </li>
 
 {% endblock %}
@@ -153,4 +155,11 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block skrypty %}
+  $('#pdf_window').click(function(e){
+      e.preventDefault();
+      window.print();
+  });
 {% endblock %}

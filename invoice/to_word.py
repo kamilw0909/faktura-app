@@ -1,14 +1,14 @@
 def konwertuj(lista):
     jednosci = ["zero", "jeden", "dwa", "trzy", "cztery", "pięć", "sześć",
-     "siedem", "osiem", "dziewięć"]
+                "siedem", "osiem", "dziewięć"]
     dziesiatki = ["", "dziesięć", "dwadzieścia", "trzydzieści", "czterdzieści",
-     "pięćdziesiąt", "sześćdziesiąt", "siedemdziesiąt", "osiemdziesiąt",
-     "dziewięćdziesiąt"]
+                  "pięćdziesiąt", "sześćdziesiąt", "siedemdziesiąt", "osiemdziesiąt",
+                  "dziewięćdziesiąt"]
     setki = ["", "sto", "dwieście", "trzysta", "czterysta", "pięćset",
-     "sześćset", "siedemset", "osiemset", "dziewięćset"]
+             "sześćset", "siedemset", "osiemset", "dziewięćset"]
     nascie = ["dziesięć", "jedenaście", "dwanaście", "trzynaście",
-     "czternaście", "piętnaście", "szesnaście", "siedemnaście",
-     "osiemnaście", "dziewiętnaście"]
+              "czternaście", "piętnaście", "szesnaście", "siedemnaście",
+              "osiemnaście", "dziewiętnaście"]
     a, b, c = map(int, lista)
     if a == 0 and b == 0 and c == 0:
         return ""
@@ -23,16 +23,16 @@ def konwertuj(lista):
     if c != 0:
         wynik += jednosci[c] + " "
     return wynik
- 
- 
+
+
 def dopisek(lista, licznik):
     wielkie = ["", "tysiąc", "milion", "miliard", "bilion", "biliard",
-    "trylion", "tryliard", "kwadrylion", "kwadryliard", "kwintylion",
-    "kwintyliard", "sekstylion", "sekstyliard", "septylion", "septyliard",
-    "oktylion", "oktyliard", "nonilion", "noniliard", "decylion", "decyliard",
-    "undecylion", "undecyliard", "duodecylion", "duodecyliard", "trycylion",
-    "trycyliard", "kwadragilion", "kwadragiliard", "oktogilion", "oktogiliard",
-    "centylion", "centyliard"]
+               "trylion", "tryliard", "kwadrylion", "kwadryliard", "kwintylion",
+               "kwintyliard", "sekstylion", "sekstyliard", "septylion", "septyliard",
+               "oktylion", "oktyliard", "nonilion", "noniliard", "decylion", "decyliard",
+               "undecylion", "undecyliard", "duodecylion", "duodecyliard", "trycylion",
+               "trycyliard", "kwadragilion", "kwadragiliard", "oktogilion", "oktogiliard",
+               "centylion", "centyliard"]
     if licznik == 0:
         return ""
     a = 0
@@ -71,7 +71,6 @@ def dopisek(lista, licznik):
  
  
 def main(liczba):
-    #liczba = int(str(liczba).split('.')[0])
     if liczba == 0:
         print("zero")
         return
@@ -94,7 +93,18 @@ def main(liczba):
         if liczba[i] != '0' or liczba[i + 1] != '0' or liczba[i + 2] != '0':
             wynik += dopisek(liczba[i] + liczba[i + 1] + liczba[i + 2], dlugosc)
         dlugosc -= 1
-    return(wynik)
+    return wynik
+
+
+def invoice_sum_to_word(invoice):
+    zloty = int(invoice.invoice_sum.split('.')[0])
+    zlotowki = main(zloty)
+    grosze = 'zero'
+    if int(str(invoice.invoice_sum).split('.')[1]) > 0:
+        kwota_gr = int(invoice.invoice_sum.split('.')[1])
+        grosze = main(kwota_gr)
+    return zlotowki, grosze
+
 
 if __name__ == "__main__":
     kwota = input('Podaj liczbę: ')

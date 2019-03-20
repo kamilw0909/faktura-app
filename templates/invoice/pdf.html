@@ -1,0 +1,121 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="../../static/pdf.css" type="text/css">
+</head>
+
+<body>
+
+  <div class="header">
+    <p>
+      Faktura nr {{ invoice.invoice_number }}<br>
+      Data wystawienia: {{ invoice.invoice_date}}<br>
+      Data sprzedaży: {{ invoice.invoice_sale_date|date:'Y-m' }}<br>
+      Termin płatności: {{ invoice.invoice_payment_date|date:'Y-m-d' }}<br>
+      Płatność: {{ invoice.payment }}
+    </p>
+  </div>
+
+  <hr>
+
+  <div class="sidesData">
+    <div class="side">
+      <p>
+        <span class="fontUp">Sprzedawca</span><br>
+        {{ invoice.invoice_s_fk.name }}<br>
+        {{ invoice.invoice_s_fk.adress }}<br>
+        {{ invoice.invoice_s_fk.postal_code }}<br>
+        NIP: {{ invoice.invoice_s_fk.nip }}<br>
+        Nazwa banku: {{ invoice.invoice_s_fk.bank_name }}<br>
+        Numer konta: {{ invoice.invoice_s_fk.account_nr }}
+      </p>
+    </div>
+    <div class="side">
+      <p>
+        <span class="fontUp">Kupujący</span><br>
+        {{ invoice.invoice_b_fk.name }}<br>
+        {{ invoice.invoice_b_fk.adress }}<br>
+        {{ invoice.invoice_b_fk.postal_code }}<br>
+        NIP: {{ invoice.invoice_b_fk.nip }}<br>
+        Nazwa banku: {{ invoice.invoice_b_fk.bank_name }}<br>
+        Numer konta: {{ invoice.invoice_b_fk.account_nr }}
+      </p>
+    </div>
+  </div>
+
+  <div class="services">
+    <table>
+      <thead>
+      <tr>
+        <th scope="col">Lp</th>
+        <th scope="col">Nazwa</th>
+        <th scope="col">Ilość</th>
+        <th scope="col">Cena</th>
+        <th scope="col">Jednostka</th>
+        <th scope="col">Wartość</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for item in invoice.item_set.all %}
+      <tr>
+        <td scope="row">{{ forloop.counter }}.</td>
+        <td>{{ item.product }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.price }}zł</td>
+        <td>{{ item.unit }}</td>
+        <td>
+          {{ item.item_sum }}zł
+        </td>
+      </tr>
+      {% endfor %}
+      <tr class="withoutBorder">
+        <td colspan="3" class="withoutBorder"><td>
+        <td class="withoutBorder"><strong>Razem:</strong></td>
+        <td class="withoutBorder"><strong>{{ invoice.invoice_sum }}zł</strong></td>
+      </tr>
+      <tr class="withoutBorder">
+        <td colspan="3"><td>
+        <td><strong>Wartość:</strong></td>
+        <td><strong>{{ invoice.invoice_sum }}PLN</strong></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <div class="comments">
+    <div class="commentHeader">
+      <p><span class="fontUp">Uwagi:</span></p>
+    </div>
+    <div class="commentContent">
+      <p>{{ invoice.comments }}</p>
+      <p><span class="commentAdd">Sprzedawca zwolniony podmiotowo z podatku od towarów i usług.
+        Dostawa towarów lub świadczenie usług zwolnione na podstawie art. 113 ust. 1 (albo ust. 9)
+        ustawy z dnia 11 marca 2004 o podatku od towarów i usług (Dz. U. Z 2011r. Nr 177 poz. 1054 z późn.
+        Zmianami).</span>
+      </p>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="summary">
+    <div class="summaryHeader">
+      <p><span class="fontUp">Do zapłaty:</span></p>
+    </div>
+    <div class="summaryContent">
+      <p>{{ invoice.invoice_sum }}zł</p>
+      <p>Słownie: {{ zlotowki }} zł {{ grosze }} gr</p>
+    </div>
+  </div>
+
+  <div class="signature">
+    <strong>Imię i nazwisko:</strong><br>
+    {{invoice.sign}}
+  </div>
+
+
+
+</body>
+</html>

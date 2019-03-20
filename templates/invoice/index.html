@@ -38,7 +38,7 @@
                         </td>
                         <td>
                             <button type="button" class="btn btn-link">
-                                <a ic-post-to="{% url 'invoice:download' %}" class="btn">
+                                <a href="{% url 'invoice:download' invoice.id %}" class="btn">
                                     <i class="fas fa-download"></i>
                                 </a>
                             </button>

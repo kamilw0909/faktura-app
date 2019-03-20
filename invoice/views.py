@@ -2,8 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+from django.conf import settings
+from django.template.loader import render_to_string
+import weasyprint
 
-from .to_word import main
+from .to_word import invoice_sum_to_word
 from .models import Invoice
 from .forms import InvoiceForm, ItemFormSet
 
@@ -19,15 +23,10 @@ class IndexView(generic.ListView):
 @login_required
 def detail(request, invoice_id):
     invoice = get_object_or_404(Invoice, pk=invoice_id)
-    zloty = int(invoice.invoice_sum.split('.')[0])
-    zlotowki = main(zloty)
-    grosze = 'zero'
-    if int(str(invoice.invoice_sum).split('.')[1]) > 0:
-        kwota_gr = int(invoice.invoice_sum.split('.')[1])
-        grosze = main(kwota_gr)
+    platnosc = invoice_sum_to_word(invoice)
     return render(request,
                   'invoice/detail.html',
-                  {'invoice': invoice, 'zlotowki': zlotowki, 'grosze': grosze})
+                  {'invoice': invoice, 'zlotowki': platnosc[0], 'grosze': platnosc[1]})
 
 
 @login_required
@@ -59,7 +58,13 @@ def new_invoice(request):
                   {'form_invoice': form_invoice, 'formset_item': formset_item})
 
 
-def download(request):
-    if request.method == 'POST':
-        response = HttpResponse('V')
-        return response
+@staff_member_required
+def download(request, invoice_id):
+    invoice = get_object_or_404(Invoice, id=invoice_id)
+    platnosc = invoice_sum_to_word(invoice)
+    html = render_to_string('invoice/pdf.html', {'invoice': invoice, 'zlotowki': platnosc[0], 'grosze': platnosc[1]})
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="faktura_{}.pdf"'.format(invoice.id)
+    weasyprint.HTML(string=html).write_pdf(response,
+                                           stylesheets=[weasyprint.CSS(settings.STATIC_ROOT + 'pdf.css')])
+    return response
