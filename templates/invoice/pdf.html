@@ -8,7 +8,7 @@
 
   <div class="header">
     <p>
-      Faktura nr {{ invoice.invoice_number }}<br>
+      Faktura nr {{ invoice.invoice_number }}<br><br>
       Data wystawienia: {{ invoice.invoice_date}}<br>
       Data sprzedaży: {{ invoice.invoice_sale_date|date:'Y-m' }}<br>
       Termin płatności: {{ invoice.invoice_payment_date|date:'Y-m-d' }}<br>
@@ -20,26 +20,20 @@
 
   <div class="sidesData">
     <div class="side">
-      <p>
-        <span class="fontUp">Sprzedawca</span><br>
-        {{ invoice.invoice_s_fk.name }}<br>
-        {{ invoice.invoice_s_fk.adress }}<br>
-        {{ invoice.invoice_s_fk.postal_code }}<br>
-        NIP: {{ invoice.invoice_s_fk.nip }}<br>
-        Nazwa banku: {{ invoice.invoice_s_fk.bank_name }}<br>
-        Numer konta: {{ invoice.invoice_s_fk.account_nr }}
-      </p>
+        <p class="fontUp">Sprzedawca</p>
+        <p>{{ invoice.invoice_s_fk.name }}</p>
+        <p>{{ invoice.invoice_s_fk.adress }}<br>
+          {{ invoice.invoice_s_fk.postal_code }}</p>
+        <p>NIP {{ invoice.invoice_s_fk.nip }}</p>
+        <p>{{ invoice.invoice_s_fk.bank_name }}<br>
+          {{ invoice.invoice_s_fk.account_nr }}</p>
     </div>
     <div class="side">
-      <p>
-        <span class="fontUp">Kupujący</span><br>
-        {{ invoice.invoice_b_fk.name }}<br>
-        {{ invoice.invoice_b_fk.adress }}<br>
-        {{ invoice.invoice_b_fk.postal_code }}<br>
-        NIP: {{ invoice.invoice_b_fk.nip }}<br>
-        Nazwa banku: {{ invoice.invoice_b_fk.bank_name }}<br>
-        Numer konta: {{ invoice.invoice_b_fk.account_nr }}
-      </p>
+        <p class="fontUp">Nabywca</p>
+        <p>{{ invoice.invoice_b_fk.name }}</p>
+        <p>{{ invoice.invoice_b_fk.adress }}<br>
+          {{ invoice.invoice_b_fk.postal_code }}</p>
+        <p>NIP {{ invoice.invoice_b_fk.nip }}</p>
     </div>
   </div>
 
@@ -47,36 +41,34 @@
     <table>
       <thead>
       <tr>
-        <th scope="col">Lp</th>
-        <th scope="col">Nazwa</th>
-        <th scope="col">Ilość</th>
-        <th scope="col">Cena</th>
-        <th scope="col">Jednostka</th>
-        <th scope="col">Wartość</th>
+        <th class="LPColumn">Lp</th>
+        <th class="textLeft">Nazwa</th>
+        <th class="textRight">Ilość</th>
+        <th class="textRight">Cena</th>
+        <th class="textRight">Wartość</th>
       </tr>
       </thead>
       <tbody>
       {% for item in invoice.item_set.all %}
       <tr>
-        <td scope="row">{{ forloop.counter }}.</td>
-        <td>{{ item.product }}</td>
-        <td>{{ item.quantity }}</td>
-        <td>{{ item.price }}zł</td>
-        <td>{{ item.unit }}</td>
-        <td>
+        <td class="LPColumn">{{ forloop.counter }}.</td>
+        <td class="textLeft">{{ item.product }}</td>
+        <td class="textRight">{{ item.quantity }} {{ item.unit }}</td>
+        <td class="textRight">{{ item.price }}zł</td>
+        <td class="textRight">
           {{ item.item_sum }}zł
         </td>
       </tr>
       {% endfor %}
       <tr class="withoutBorder">
-        <td colspan="3" class="withoutBorder"><td>
-        <td class="withoutBorder"><strong>Razem:</strong></td>
-        <td class="withoutBorder"><strong>{{ invoice.invoice_sum }}zł</strong></td>
+        <td colspan="2"><td>
+        <td class="textRight"><strong>Razem:</strong></td>
+        <td class="textRight"><strong>{{ invoice.invoice_sum }}zł</strong></td>
       </tr>
       <tr class="withoutBorder">
-        <td colspan="3"><td>
-        <td><strong>Wartość:</strong></td>
-        <td><strong>{{ invoice.invoice_sum }}PLN</strong></td>
+        <td colspan="2"><td>
+        <td class="textRight"><strong>Wartość:</strong></td>
+        <td class="textRight"><strong>{{ invoice.invoice_sum }}PLN</strong></td>
       </tr>
       </tbody>
     </table>
@@ -111,7 +103,7 @@
   </div>
 
   <div class="signature">
-    <strong>Imię i nazwisko:</strong><br>
+    <p>Imię i nazwisko:</p>
     {{invoice.sign}}
   </div>
 

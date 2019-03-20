@@ -49,17 +49,17 @@
             <br>
             {{ invoice.invoice_s_fk.postal_code }}
             <br>
-            NIP: {{ invoice.invoice_s_fk.nip }}
+            NIP {{ invoice.invoice_s_fk.nip }}
             <br>
-            Nazwa banku: {{ invoice.invoice_s_fk.bank_name }}
+            {{ invoice.invoice_s_fk.bank_name }}
             <br>
-            Numer konta: {{ invoice.invoice_s_fk.account_nr }}
+            {{ invoice.invoice_s_fk.account_nr }}
           </p>
         </div>
     <!-- kolumna kupującego -->
         <div class="col-sm-12 col-md-6">
           <p>
-            <strong>Kupujący</strong>
+            <strong>Nabywca</strong>
             <br>
             {{ invoice.invoice_b_fk.name }}
             <br>
@@ -67,11 +67,7 @@
             <br>
             {{ invoice.invoice_b_fk.postal_code }}
             <br>
-            NIP: {{ invoice.invoice_b_fk.nip }}
-            <br>
-            Nazwa banku: {{ invoice.invoice_b_fk.bank_name }}
-            <br>
-            Numer konta: {{ invoice.invoice_b_fk.account_nr }}
+            NIP {{ invoice.invoice_b_fk.nip }}
           </p>
         </div>
       </div>
@@ -106,12 +102,12 @@
             {% endfor %}
             <tr>
               <td colspan="3"><td>
-              <td class="text-right"><strong>Razem:</strong></td>
+              <td class="text-right">Razem:</td>
               <td><strong>{{ invoice.invoice_sum }}zł</strong></td>
             </tr>
             <tr>
               <td colspan="3"><td>
-              <td class="text-right"><strong>Wartość:</strong></td>
+              <td class="text-right">Wartość:</td>
               <td><strong>{{ invoice.invoice_sum }}PLN</strong></td>
             </tr>
           </tbody>

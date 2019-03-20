@@ -22,9 +22,7 @@ class Buyer(models.Model):
     adress = models.CharField('Ulica i numer', max_length=100)
     postal_code = models.CharField('Kod pocztowy i miejscowość', max_length=100)
     nip = models.PositiveIntegerField('NIP')
-    bank_name = models.CharField('Nazwa banku', max_length=100)
-    account_nr = models.CharField('Numer konta', max_length=26)
-    
+
     def __str__(self):
         return self.name
 
@@ -69,8 +67,9 @@ class Invoice(models.Model):
 class Item(models.Model):
     UNIT_CHOICES = [
         ('h', 'h'),
-        ('1h x os.', '1h x os.'),
-        ('szt.', 'szt.')
+        ('1h za os.', '1h za os.'),
+        ('szt.', 'szt.'),
+        ('usł.', 'usł.'),
     ]
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE,
                                 verbose_name='Usługi')
