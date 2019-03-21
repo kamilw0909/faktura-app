@@ -13,6 +13,10 @@ class Seller(models.Model):
     bank_name = models.CharField('Nazwa banku', max_length=100)
     account_nr = models.CharField('Numer konta', max_length=26)
 
+    class Meta:
+        verbose_name = 'Sprzedawca'
+        verbose_name_plural = 'Sprzedawcy'
+
     def __str__(self):
         return self.name
 
@@ -22,6 +26,10 @@ class Buyer(models.Model):
     adress = models.CharField('Ulica i numer', max_length=100)
     postal_code = models.CharField('Kod pocztowy i miejscowość', max_length=100)
     nip = models.PositiveIntegerField('NIP')
+
+    class Meta:
+        verbose_name = 'Nabywca'
+        verbose_name_plural = 'Nabywcy'
 
     def __str__(self):
         return self.name
@@ -59,6 +67,10 @@ class Invoice(models.Model):
         for item in self.item_set.all():
             suma += item.quantity * item.price
         return '{:.2f}'.format(suma)
+
+    class Meta:
+        verbose_name = 'Faktura'
+        verbose_name_plural = 'Faktury'
 
     def __str__(self):
         return self.invoice_number
