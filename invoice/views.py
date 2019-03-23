@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.contrib import messages
 import weasyprint
 
 from .to_word import invoice_sum_to_word
@@ -65,6 +66,9 @@ def new_buyer(request):
         form_buyer = BuyerForm(request.POST)
         if form_buyer.is_valid():
             form_buyer.save()
+            messages.success(request, 'Nowy nabywca został dodany i możesz go wybrać z listy')
+        else:
+            messages.error('Coś poszło nie tak - nowy nabywca NIE został dodany')
         return HttpResponseRedirect('/new/')
 
 
