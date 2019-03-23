@@ -9,7 +9,7 @@ import weasyprint
 
 from .to_word import invoice_sum_to_word
 from .models import Invoice
-from .forms import InvoiceForm, ItemFormSet
+from .forms import InvoiceForm, ItemFormSet, BuyerForm
 
 
 class IndexView(generic.ListView):
@@ -53,9 +53,19 @@ def new_invoice(request):
     else:
         form_invoice = InvoiceForm()
         formset_item = ItemFormSet()
+        form_buyer = BuyerForm()
     return render(request,
                   'invoice/new.html',
-                  {'form_invoice': form_invoice, 'formset_item': formset_item})
+                  {'form_invoice': form_invoice, 'formset_item': formset_item,
+                   'form_buyer': form_buyer})
+
+
+def new_buyer(request):
+    if request.method == 'POST':
+        form_buyer = BuyerForm(request.POST)
+        if form_buyer.is_valid():
+            form_buyer.save()
+        return HttpResponseRedirect('/new/')
 
 
 @staff_member_required

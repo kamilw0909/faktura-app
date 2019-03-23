@@ -65,6 +65,7 @@
             </div>
           <!--end .item_row-->
           </div>
+
         {% endfor %}
         <a id="add_product" class="btn btn-outline-secondary mb-2 mt-2" href="#" role="button"><i class="fas fa-plus"></i></a>
       {% endif %}
@@ -80,6 +81,37 @@
 
   </div>
 </div>
+
+<!--Buyer modal-->
+<div class="modal fade" id="buyerModal" tabindex="-1" role="dialog" aria-labelledby="modalB" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalB">Nowy nabywca</h5>
+        <button class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'invoice:new_buyer' %}" method="post">{% csrf_token %}
+          {% for field in form_buyer %}
+          <div class="form-group row">
+            <label class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-4 col-form-label">{{field.label}}</label>
+            <div class="col-12 col-sm-12 col-md-7 col-lg-8 col-xl-8">
+              {{ field|add_class:"form-control" }}
+            </div>
+          </div>
+          {% endfor %}
+          <button type="submit" class="btn btn-primary">Zapisz</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 {% endblock %}
   {% block skrypty %}
@@ -107,5 +139,19 @@
       $(this).parents('.item_row').remove();
       $('.remove_item:last').attr('disabled', false);
     });
+
+    // new buyer
+    $('#id_invoice_b_fk').append($('<option>', {
+      value: 'newBuyer',
+      text: 'DODAJ NOWEGO NABYWCĘ'
+    })).on('change', function(e) {
+      e.preventDefault();
+      var selectedOpt = $(this).find(':selected').val();
+      if (selectedOpt === 'newBuyer') {
+        $('#buyerModal').modal('show');
+        $(this).val(0);
+      }
+    });
+
 
   {% endblock %}

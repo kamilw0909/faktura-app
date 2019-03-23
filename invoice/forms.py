@@ -1,6 +1,6 @@
 from django.forms import ModelForm, inlineformset_factory, Textarea
 
-from .models import Invoice, Item
+from .models import Invoice, Item, Buyer
 
 
 class InvoiceForm(ModelForm):
@@ -24,4 +24,8 @@ ItemFormSet = inlineformset_factory(Invoice, Item,
                                     can_delete=True)
 
 
+class BuyerForm(ModelForm):
+    class Meta:
+        model = Buyer
+        exclude = ()
 
