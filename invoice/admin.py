@@ -45,3 +45,4 @@ class SellerAdmin(admin.ModelAdmin):
 
 admin.site.register(Buyer)
 
+

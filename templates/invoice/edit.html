@@ -1,56 +1,100 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load widget_tweaks %}
 
-{% block title %}{{invoice.invoice_number}}{% endblock %}
-
-{% block breadcrumb %}
-<li class="breadcrumb-item active" aria-current="page">{{ invoice.invoice_number }}</li>
+{% block title %}
+  Fakturka
 {% endblock %}
+
 
 {% block content %}
 
-<div class="row mb-3 mt-5">
-  <div class="col-12 col-lg-11 col-xl-10">
-    <form>{% csrf_token %}
-      {% for field in form_invoice %}
-        {% if field.label == 'Uwagi' %}
-          <!--Produkty-->
-          <div class="table-responsive mr-2 ml-2">
-            <table class="table table-hover table-sm">
-              <thead>
-                <tr>
-                  <th scope="col">Nazwa</th>
-                  <th scope="col">Ilość</th>
-                  <th scope="col">Cena</th>
-                  <th scope="col">Jednostka</th>
-                  <th scope="col"><i class="far fa-trash-alt"></i></th>
-                </tr>
-              </thead>
-              <tbody>
-              {{ formset_item.managment_form }}
-              {% for form in formset_item.forms %}
-                <tr>
-                  <td>{{ form.product|add_class:"form-control" }}</td>
-                  <td>{{ form.quantity|add_class:"form-control" }}</td>
-                  <td>{{ form.price|add_class:"form-control" }}</td>
-                  <td>{{ form.unit|add_class:"form-control" }}</td>
-                  <td>
-                    {% if formset_item.can_delete%}
-                      {{ form.DELETE }}
-                    {% endif %}
-                  </td>
-                </tr>
-              {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        {% endif %}
-        <div class="form-group row">
-          <label class="col-12 col-md-4 col-lg-3 col-xl-2 col-form-label">{{field.label}}</label>
-          <div class="col-12 col-md-8 col-lg-7 col-xl-6">
-            {{ field|add_class:"form-control" }}
-          </div>
+<div class="row mt-5">
+  {% if messages %}
+    <div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-10">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show d-print-none" role="alert">
+          <strong>{{ message|safe }}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="col-12 col-lg-9 col-xl-10">
+    <form action="{% url 'invoice:edit' invoice.id %}" method="post">{% csrf_token %}
+      {% for field in form_invoice %}
+      {% if field.label == 'Uwagi' %}
+        <hr>
+          <div id="items_row">
+          {{ formset_item.management_form }}
+          {% for form in formset_item.forms %}
+            <div class="row mb-2 mt-2 item_row">
+              {% for hidden in form.hidden_fields %}
+                {{ hidden }}
+              {% endfor %}
+              <div class="col-12 col-sm-12 col-md-5">
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="far fa-edit"></i>
+                    </span>
+                  </div>
+                  {{ form.product|add_class:"form-control" }}
+                </div>
+              </div>
+              <div class="col-6 col-sm-3 col-md-2">
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <strong>+/-</strong>
+                    </span>
+                  </div>
+                  {{ form.quantity|add_class:"form-control" }}
+                </div>
+              </div>
+              <div class="col-6 col-sm-3 col-md-2">
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fas fa-dollar-sign"></i>
+                    </span>
+                  </div>
+                  {{ form.price|add_class:"form-control" }}
+                </div>
+              </div>
+              <div class="col-6 col-sm-5 col-md-2">
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <small>Jedn.</small>
+                    </span>
+                  </div>
+                  {{ form.unit|add_class:"form-control" }}
+                </div>
+              </div>
+              <div class="col-6 col-sm-1 col-md-1">
+                  {% if formset_item.can_delete %}{{ form.DELETE|add_class:"sr-only" }}{% endif %}
+                  <button type="button" class="btn btn-outline-danger remove_item">
+                    <i class="far fa-trash-alt"></i>
+                  </button>
+              </div>
+            </div>
+          <!--end .item_row-->
+          {% endfor %}
+          </div>
+
+
+        <a id="add_product" class="btn btn-outline-secondary mb-2 mt-2" href="#" role="button"><i class="fas fa-plus"></i></a>
+      {% endif %}
+      <div class="form-group row">
+        <label class="col-12 col-md-4 col-lg-3 col-xl-2 col-form-label">{{field.label}}</label>
+        <div class="col-12 col-md-8 col-lg-7 col-xl-6">
+          {{ field|add_class:"form-control" }}
+        </div>
+      </div>
       {% endfor %}
       <button type="submit" class="btn btn-primary">Zapisz</button>
     </form>
@@ -58,4 +102,39 @@
   </div>
 </div>
 
+<!--Buyer modal-->
+<div class="modal fade" id="buyerModal" tabindex="-1" role="dialog" aria-labelledby="modalB" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalB">Nowy nabywca</h5>
+        <button class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'invoice:new_buyer' %}" method="post">{% csrf_token %}
+          {% for field in form_buyer %}
+          <div class="form-group row">
+            <label class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-4 col-form-label">{{field.label}}</label>
+            <div class="col-12 col-sm-12 col-md-7 col-lg-8 col-xl-8">
+              {{ field|add_class:"form-control" }}
+            </div>
+          </div>
+          {% endfor %}
+          <button type="submit" class="btn btn-primary">Zapisz</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block js_script %}
+  <script src="{% static 'invoice.js' %}"></script>
 {% endblock %}

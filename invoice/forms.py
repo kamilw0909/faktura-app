@@ -20,7 +20,7 @@ class ItemForm(ModelForm):
 
 ItemFormSet = inlineformset_factory(Invoice, Item,
                                     form=ItemForm,
-                                    extra=1,
+                                    extra=3,
                                     can_delete=True)
 
 

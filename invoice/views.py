@@ -6,6 +6,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.contrib import messages
+from django.urls import reverse
 import weasyprint
 
 from .to_word import invoice_sum_to_word
@@ -32,12 +33,24 @@ def detail(request, invoice_id):
 
 @login_required
 def edit(request, invoice_id):
-    invoice = Invoice.objects.get(pk=invoice_id)
-    form_invoice = InvoiceForm(instance=invoice)
-    formset_item = ItemFormSet(instance=invoice)
+    invoice = get_object_or_404(Invoice, pk=invoice_id)
+    if request.method == 'POST':
+        form_invoice = InvoiceForm(request.POST, instance=invoice)
+        formset_item = ItemFormSet(request.POST, request.FILES, instance=invoice)
+        if formset_item.is_valid() and form_invoice.is_valid():
+            form_invoice.save()
+            formset_item.save()
+            messages.success(request, 'Poprawki w fakturze %s zostały zapisane.' % invoice.invoice_number)
+            return HttpResponseRedirect(reverse('invoice:detail', args=[invoice_id]))
+        print('item: ', formset_item.errors, 'invoice: ', form_invoice.errors)
+    else:
+        form_invoice = InvoiceForm(instance=invoice)
+        formset_item = ItemFormSet(instance=invoice)
+        form_buyer = BuyerForm(instance=invoice)
     return render(request,
                   'invoice/edit.html',
-                  {'form_invoice': form_invoice, 'formset_item': formset_item})
+                  {'form_invoice': form_invoice, 'formset_item': formset_item,
+                   'form_buyer': form_buyer, 'invoice': invoice})
 
 
 @login_required
@@ -50,7 +63,8 @@ def new_invoice(request):
         if formset_item.is_valid():
             form_invoice.save()
             formset_item.save()
-            return HttpResponseRedirect('/')
+            messages.success(request, 'Faktura %s została dodana.' % form_invoice.cleaned_data['invoice_number'])
+            return HttpResponseRedirect(reverse('invoice:index'))
     else:
         form_invoice = InvoiceForm()
         formset_item = ItemFormSet()
