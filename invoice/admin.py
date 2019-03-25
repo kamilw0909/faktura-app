@@ -33,8 +33,6 @@ class InvoiceAdmin(admin.ModelAdmin):
     list_display = ('invoice_number', 'invoice_sale_date',
                     'invoice_s_fk', 'invoice_b_fk')
     list_filter = ('invoice_number', 'invoice_date', 'invoice_s_fk')
-    date_hierarchy = 'invoice_sale_date'
-    ordering = ['invoice_sale_date']
 
 
 @admin.register(Seller)

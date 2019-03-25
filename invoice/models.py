@@ -1,6 +1,5 @@
 from django.db import models
 from django.conf import settings
-from django.utils import timezone
 import datetime
 
 
@@ -35,22 +34,19 @@ class Buyer(models.Model):
         return self.name
 
 
-def one_month_hence():
-    return timezone.now() + timezone.timedelta(days=30)
-
-
 class Invoice(models.Model):
 
     PAYMENT_CHOICES = (
         ('przelew', 'przelew'),
         ('gotówka', 'gotówka'),
     )
-    invoice_number = models.CharField('Numer faktury', max_length=7,
-                                      default='{}'.format(datetime.datetime.now().strftime('/%Y')))
+    invoice_number = models.CharField('Numer faktury', max_length=8)
     invoice_date = models.CharField('Data i miejsce wystawienia', max_length=20,
                                     default='Warszawa, {}'.format(datetime.datetime.now().strftime('%Y-%m-%d')))
-    invoice_sale_date = models.DateField('Data sprzedaży', default=timezone.now)
-    invoice_payment_date = models.DateField('Termin płatności', default=one_month_hence)
+    invoice_sale_date = models.CharField('Data sprzedaży', max_length=10,
+                                         default='{}'.format(datetime.datetime.now().strftime('%Y-%m')))
+    invoice_payment_date = models.DateField('Termin płatności',
+                default='{}'.format((datetime.datetime.now()+datetime.timedelta(days=30)).strftime('%Y-%m-%d')))
     payment = models.CharField('Płatność', max_length=10,
                                choices=PAYMENT_CHOICES,
                                default='transfer')
@@ -86,7 +82,7 @@ class Item(models.Model):
     ]
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE,
                                 verbose_name='Usługi')
-    product = models.CharField('Nazwa', max_length=250)
+    product = models.CharField('Nazwa', max_length=300)
     quantity = models.PositiveIntegerField('Ilość', default=1)
     price = models.FloatField('Cena jednostki')
     unit = models.CharField('Jednostka', max_length=100,
