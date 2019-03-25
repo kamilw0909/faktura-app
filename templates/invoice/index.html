@@ -4,62 +4,70 @@
 
 {% block content %}
 <div class="row mt-5">
-      {% if messages %}
-        <div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-10">
-          {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show d-print-none" role="alert">
-              <strong>{{ message|safe }}</strong>
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
-    <div class="col">
-        <h1 class="display-4">Moje faktury</h1>
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Nr faktury</th>
-                        <th scope="col">Wartość</th>
-                        <th scope="col">Klient</th>
-                        <th scope="col">Data wystawienia</th>
-                        <th scope="col">Termin płatności</th>
-                        <th scope="col">Usługa/i</th>
-                        <th scope="col">PDF</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for invoice in invoices %}
-                    <tr>
-                        <td scope="row">
-                            <a href="{% url 'invoice:detail' invoice.id %}" class="text-success">
-                                {{ invoice.invoice_number }}
-                            </a>
-                        </td>
-                        <td>{{ invoice.invoice_sum }}zł</td>
-                        <td>{{ invoice.invoice_b_fk.name }}</td>
-                        <td>{{ invoice.invoice_sale_date|date:'d-m-Y' }}</td>
-                        <td>{{ invoice.invoice_payment_date|date:'d-m-Y' }}</td>
-                        <td>
-                            {% for item in invoice.item_set.all %}
-                            <small>{{ item }},</small>
-                            {% endfor %}
-                        </td>
-                        <td>
-                            <button type="button" class="btn btn-link">
-                                <a href="{% url 'invoice:download' invoice.id %}" class="btn">
-                                    <i class="fas fa-download"></i>
-                                </a>
-                            </button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+  {% if messages %}
+  <div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-10">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show d-print-none" role="alert">
+      <strong>{{ message|safe }}</strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <div class="col">
+    <h1 class="display-4">Moje faktury</h1>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th scope="col">Nr faktury</th>
+          <th scope="col">Wartość</th>
+          <th scope="col">Klient</th>
+          <th scope="col">Data wystawienia</th>
+          <th scope="col">Termin płatności</th>
+          <th scope="col">Usługa/i</th>
+          <th scope="col">Akcje</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for invoice in invoices %}
+        <tr>
+          <td scope="row">
+            <a href="{% url 'invoice:detail' invoice.id %}" class="text-success">
+              {{ invoice.invoice_number }}
+            </a>
+          </td>
+          <td>{{ invoice.invoice_sum }}zł</td>
+          <td>{{ invoice.invoice_b_fk.name }}</td>
+          <td>{{ invoice.invoice_sale_date|date:'d-m-Y' }}</td>
+          <td>{{ invoice.invoice_payment_date|date:'d-m-Y' }}</td>
+          <td>
+            {% for item in invoice.item_set.all %}
+            <small>{{ item }},</small>
+            {% endfor %}
+          </td>
+          <td>
+            <div class="btn-group">
+              <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-wrench"></i>
+              </button>
+              <div class="dropdown-menu">
+                <a href="{% url 'invoice:download' invoice.id %}" class="dropdown-item">
+                  Pobierz w PDF
+                </a>
+                <a href="{% url 'invoice:copied_invoice' invoice.id %}" class="dropdown-item">
+                  Wystaw pododną
+                </a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 {% endblock %}

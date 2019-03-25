@@ -66,6 +66,7 @@ def new_invoice(request):
             formset_item.save()
             messages.success(request, 'Faktura %s została dodana.' % form_invoice.cleaned_data['invoice_number'])
             return HttpResponseRedirect(reverse('invoice:index'))
+        else: return HttpResponse('invoice: {}<br>items: {}'.format(form_invoice.errors, formset_item.errors))
     else:
         invoices = Invoice.objects.filter(invoice_s_fk__user__username=request.user.username)
         nums = [0]
@@ -74,6 +75,23 @@ def new_invoice(request):
         form_invoice = InvoiceForm(initial={'invoice_number': '{:02d}/{}'.format(max(nums)+1, datetime.datetime.now().strftime('%Y'))})
         formset_item = ItemFormSet()
         form_buyer = BuyerForm()
+    return render(request,
+                  'invoice/new.html',
+                  {'form_invoice': form_invoice, 'formset_item': formset_item,
+                   'form_buyer': form_buyer})
+
+
+@login_required
+def copied_invoice(request, invoice_id):
+    invoice = get_object_or_404(Invoice, pk=invoice_id)
+    invoice.pk = None
+    invoices = Invoice.objects.filter(invoice_s_fk__user__username=request.user.username)
+    nums = [0]
+    for i in invoices:
+        nums.append(int(i.invoice_number.split('/')[0]))
+    form_invoice = InvoiceForm(instance=invoice, initial={'invoice_number': '{:02d}/{}'.format(max(nums)+1, datetime.datetime.now().strftime('%Y'))})
+    formset_item = ItemFormSet(instance=invoice)
+    form_buyer = BuyerForm(instance=invoice)
     return render(request,
                   'invoice/new.html',
                   {'form_invoice': form_invoice, 'formset_item': formset_item,
