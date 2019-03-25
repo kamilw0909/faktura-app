@@ -45,7 +45,7 @@ class Invoice(models.Model):
         ('przelew', 'przelew'),
         ('gotówka', 'gotówka'),
     )
-    invoice_number = models.CharField('Numer faktury', max_length=7, unique=True,
+    invoice_number = models.CharField('Numer faktury', max_length=7,
                                       default='{}'.format(datetime.datetime.now().strftime('/%Y')))
     invoice_date = models.CharField('Data i miejsce wystawienia', max_length=20,
                                     default='Warszawa, {}'.format(datetime.datetime.now().strftime('%Y-%m-%d')))
@@ -71,6 +71,7 @@ class Invoice(models.Model):
     class Meta:
         verbose_name = 'Faktura'
         verbose_name_plural = 'Faktury'
+        ordering = ('-invoice_number',)
 
     def __str__(self):
         return self.invoice_number

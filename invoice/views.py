@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from django.contrib import messages
 from django.urls import reverse
 import weasyprint
+import datetime
 
 from .to_word import invoice_sum_to_word
 from .models import Invoice
@@ -66,7 +67,11 @@ def new_invoice(request):
             messages.success(request, 'Faktura %s została dodana.' % form_invoice.cleaned_data['invoice_number'])
             return HttpResponseRedirect(reverse('invoice:index'))
     else:
-        form_invoice = InvoiceForm()
+        invoices = Invoice.objects.filter(invoice_s_fk__user__username=request.user.username)
+        nums = [0]
+        for i in invoices:
+            nums.append(int(i.invoice_number.split('/')[0]))
+        form_invoice = InvoiceForm(initial={'invoice_number': '{:02d}/{}'.format(max(nums)+1, datetime.datetime.now().strftime('%Y'))})
         formset_item = ItemFormSet()
         form_buyer = BuyerForm()
     return render(request,
@@ -83,7 +88,7 @@ def new_buyer(request):
             messages.success(request, 'Nowy nabywca został dodany i możesz go wybrać z listy')
         else:
             messages.error('Coś poszło nie tak - nowy nabywca NIE został dodany')
-        return HttpResponseRedirect('/new/')
+        return HttpResponseRedirect(reverse('invoice:new_invoice'))
 
 
 @staff_member_required
