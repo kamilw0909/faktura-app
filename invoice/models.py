@@ -2,7 +2,6 @@ from django.db import models
 from django.conf import settings
 import datetime
 
-
 class Seller(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField('Nazwa', max_length=100,)
@@ -54,7 +53,8 @@ class Invoice(models.Model):
                                      verbose_name='Sprzedawca',)
     invoice_b_fk = models.ForeignKey(Buyer, on_delete=models.CASCADE,
                                      verbose_name='Nabywca')
-    comments = models.TextField('Uwagi', max_length=250)
+    comments = models.TextField('Uwagi', max_length=250,
+            default='Faktura za miesiąc {}.'.format(datetime.datetime.now().strftime('%B %Y')))
     sign = models.CharField('Wystawca', max_length=250)
 
     @property

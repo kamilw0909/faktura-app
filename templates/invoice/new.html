@@ -136,6 +136,12 @@
 
 {% endblock %}
 
+{% block skrypty %}
+  $('#id_comments').val('Faktura za miesiąc {% now "F Y" %}.')
+  // default value in sign field
+  $('#id_sign').val('{{request.user.first_name}} {{request.user.last_name}}')
+{% endblock %}
+
 {% block js_script %}
   <script src="{% static 'invoice.js' %}"></script>
 {% endblock %}
