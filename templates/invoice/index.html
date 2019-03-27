@@ -57,6 +57,9 @@
                 <a href="{% url 'invoice:download' invoice.id %}" class="dropdown-item">
                   Pobierz w PDF
                 </a>
+                <a href="{% url 'invoice:edit' invoice.id %}" class="dropdown-item">
+                  Edytuj
+                </a>
                 <a href="{% url 'invoice:copied_invoice' invoice.id %}" class="dropdown-item">
                   Wystaw pododną
                 </a>

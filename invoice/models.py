@@ -36,26 +36,27 @@ class Buyer(models.Model):
 class Invoice(models.Model):
 
     PAYMENT_CHOICES = (
-        ('przelew', 'przelew'),
-        ('gotówka', 'gotówka'),
+        ('Przelew', 'Przelew'),
+        ('Gotówka', 'Gotówka'),
     )
-    invoice_number = models.CharField('Numer faktury', max_length=8)
+    invoice_number = models.CharField('Nr faktury', max_length=8)
     invoice_date = models.CharField('Data i miejsce wystawienia', max_length=20,
                                     default='Warszawa, {}'.format(datetime.datetime.now().strftime('%Y-%m-%d')))
     invoice_sale_date = models.CharField('Data sprzedaży', max_length=10,
                                          default='{}'.format(datetime.datetime.now().strftime('%Y-%m')))
     invoice_payment_date = models.DateField('Termin płatności',
                 default='{}'.format((datetime.datetime.now()+datetime.timedelta(days=30)).strftime('%Y-%m-%d')))
-    payment = models.CharField('Płatność', max_length=10,
-                               choices=PAYMENT_CHOICES,
-                               default='transfer')
+
     invoice_s_fk = models.ForeignKey(Seller, on_delete=models.CASCADE,
                                      verbose_name='Sprzedawca',)
     invoice_b_fk = models.ForeignKey(Buyer, on_delete=models.CASCADE,
                                      verbose_name='Nabywca')
+    payment = models.CharField('Płatność', max_length=10,
+                               choices=PAYMENT_CHOICES,
+                               default='transfer')
+    sign = models.CharField('Wystawca', max_length=250)
     comments = models.TextField('Uwagi', max_length=250,
             default='Faktura za miesiąc {}.'.format(datetime.datetime.now().strftime('%B %Y')))
-    sign = models.CharField('Wystawca', max_length=250)
 
     @property
     def invoice_sum(self):
@@ -84,7 +85,7 @@ class Item(models.Model):
                                 verbose_name='Usługi')
     product = models.CharField('Nazwa', max_length=300)
     quantity = models.PositiveIntegerField('Ilość', default=1)
-    price = models.FloatField('Cena jednostki')
+    price = models.FloatField('Cena')
     unit = models.CharField('Jednostka', max_length=100,
                             choices=UNIT_CHOICES)
     

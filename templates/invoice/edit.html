@@ -11,9 +11,9 @@
 
 <div class="row mt-5">
   {% if messages %}
-    <div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-10">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-8">
       {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show d-print-none" role="alert">
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
           <strong>{{ message|safe }}</strong>
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -23,80 +23,121 @@
     </div>
   {% endif %}
 
-  <div class="col-12 col-lg-9 col-xl-10">
+  <div class="col-12 col-md-12 col-xl-10 offset-xl-1">
     <form action="{% url 'invoice:edit' invoice.id %}" method="post">{% csrf_token %}
-      {% for field in form_invoice %}
-      {% if field.label == 'Uwagi' %}
-        <hr>
-          <div id="items_row">
-          {{ formset_item.management_form }}
-          {% for form in formset_item.forms %}
-            <div class="row mb-2 mt-2 item_row">
-              {% for hidden in form.hidden_fields %}
-                {{ hidden }}
-              {% endfor %}
-              <div class="col-12 col-sm-12 col-md-5">
-                <div class="input-group mb-2">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">
-                      <i class="far fa-edit"></i>
-                    </span>
-                  </div>
-                  {{ form.product|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-6 col-sm-3 col-md-2">
-                <div class="input-group mb-2">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">
-                      <strong>+/-</strong>
-                    </span>
-                  </div>
-                  {{ form.quantity|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-6 col-sm-3 col-md-2">
-                <div class="input-group mb-2">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">
-                      <i class="fas fa-dollar-sign"></i>
-                    </span>
-                  </div>
-                  {{ form.price|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-6 col-sm-5 col-md-2">
-                <div class="input-group mb-2">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">
-                      <small>Jedn.</small>
-                    </span>
-                  </div>
-                  {{ form.unit|add_class:"form-control" }}
-                </div>
-              </div>
-              <div class="col-6 col-sm-1 col-md-1">
-                  {% if formset_item.can_delete %}{{ form.DELETE|add_class:"sr-only" }}{% endif %}
-                  <button type="button" class="btn btn-outline-danger remove_item">
-                    <i class="far fa-trash-alt"></i>
-                  </button>
-              </div>
-            </div>
-          <!--end .item_row-->
-          {% endfor %}
-          </div>
 
-
-        <a id="add_product" class="btn btn-outline-secondary mb-2 mt-2" href="#" role="button"><i class="fas fa-plus"></i></a>
-      {% endif %}
-      <div class="form-group row">
-        <label class="col-12 col-md-4 col-lg-3 col-xl-2 col-form-label">{{field.label}}</label>
-        <div class="col-12 col-md-8 col-lg-7 col-xl-6">
-          {{ field|add_class:"form-control" }}
+      <div class="form-row">
+        <div class="form-group col-auto">
+          <label>{{form_invoice.invoice_number.label}}</label>
+          {{form_invoice.invoice_number|add_class:"form-control form-control-sm"}}
+        </div>
+        <div class="form-group col-auto offset-xl-1">
+          <label>{{form_invoice.invoice_date.label}}</label>
+          {{form_invoice.invoice_date|add_class:"form-control form-control-sm"}}
+        </div>
+        <div class="form-group col-auto offset-xl-1">
+          <label>{{form_invoice.invoice_sale_date.label}}</label>
+          {{form_invoice.invoice_sale_date|add_class:"form-control form-control-sm"}}
+        </div>
+        <div class="form-group col-auto offset-xl-1">
+          <label>{{form_invoice.invoice_payment_date.label}}</label>
+          {{form_invoice.invoice_payment_date|add_class:"form-control form-control-sm"}}
         </div>
       </div>
+
+      <hr>
+
+      <div class="form-row">
+        <div class="form-group col-12 col-sm-10 col-md-6 col-lg-5 col-xl-5">
+          <label>{{form_invoice.invoice_s_fk.label}}</label>
+          {{form_invoice.invoice_s_fk|add_class:"form-control form-control-sm"}}
+        </div>
+        <div class="form-group col-12 col-sm-10 col-md-6 col-lg-5 col-xl-5 offset-xl-1">
+          <label>{{form_invoice.invoice_b_fk.label}}</label>
+          {{form_invoice.invoice_b_fk|add_class:"form-control form-control-sm"}}
+        </div>
+      </div>
+
+      <hr>
+
+      <div id="items_row">
+      {{ formset_item.management_form }}
+      {% for form in formset_item.forms %}
+
+        {% if forloop.first %}
+          {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
+          <div class="form-row mt-2">
+            <div class="form-group d-none d-md-block col-12 col-sm-12 col-md-5 col-xl-6"><label>{{form.product.label}}</label></div>
+            <div class="w-100 d-none d-sm-block d-md-none"></div>
+            <div class="form-group d-none d-md-block col-sm-3 col-md-2 col-xl-1"><label>{{form.quantity.label}}</label></div>
+            <div class="form-group d-none d-md-block col-6 col-sm-3 col-md-2 col-xl-1"><label>{{form.price.label}}</label></div>
+            <div class="form-group d-none d-md-block col-6 col-sm-4 col-md-2"><label>{{form.unit.label}}</label></div>
+          </div>
+        {% endif %}
+
+        <div class="form-row item_row">
+          <div class="form-group col-12 col-sm-12 col-md-5 col-xl-6">
+            <label class="d-md-none">{{form.product.label}}</label>
+            {{ form.product|add_class:"form-control form-control-sm" }}
+          </div>
+
+          <div class="w-100 d-none d-sm-block d-md-none"></div>
+
+          <div class="form-group col-6 col-sm-3 col-md-2 col-xl-1">
+            <label class="d-md-none">{{form.quantity.label}}</label>
+            {{ form.quantity|add_class:"form-control form-control-sm" }}
+          </div>
+          <div class="form-group col-6 col-sm-3 col-md-2 col-xl-1">
+            <label class="d-md-none">{{form.price.label}}</label>
+            {{ form.price|add_class:"form-control form-control-sm" }}
+          </div>
+          <div class="form-group col-6 col-sm-4 col-md-2">
+            <label class="d-md-none">{{form.unit.label}}</label>
+            {{ form.unit|add_class:"form-control form-control-sm" }}
+          </div>
+          <div class="form-group col-6 col-sm-1 col-md-1">
+            <label class="d-md-none"><i class="far"></i></label>
+            <div><button type="button" class="btn btn-sm btn-outline-danger remove_item">
+              <i class="far fa-trash-alt"></i>
+            </button></div>
+          </div>
+        </div>
+        <!--end .item_row-->
       {% endfor %}
-      <button type="submit" class="btn btn-primary">Zapisz</button>
+      </div>
+      <!--end .items_row-->
+
+      <div class="form-row">
+        <div class="form-group col-6 col-sm-4 col-md-2">
+          <a id="add_product" class="btn btn-outline-secondary btn-sm mb-2 mt-2" href="#" role="button"><i class="fas fa-plus"></i></a>
+        </div>
+
+      </div>
+
+      <hr>
+
+      <div class="form-row">
+        <div class="form-group col-6 col-sm-5 col-md-3">
+          <label>{{form_invoice.payment.label}}</label>
+          {{form_invoice.payment|add_class:"form-control form-control-sm"}}
+        </div>
+        <div class="form-group col-6 col-sm-5 offset-sm-1 col-md-3 offset-md-2">
+          <label>{{form_invoice.sign.label}}</label>
+          {{form_invoice.sign|add_class:"form-control form-control-sm"}}
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-sm-10 col-md-8">
+          <label>{{form_invoice.comments.label}}</label>
+          {{form_invoice.comments|add_class:"form-control form-control-sm"}}
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary">Zapisz</button>
+        </div>
+      </div>
     </form>
 
   </div>
@@ -118,7 +159,7 @@
           <div class="form-group row">
             <label class="col-12 col-sm-12 col-md-5 col-lg-4 col-xl-4 col-form-label">{{field.label}}</label>
             <div class="col-12 col-sm-12 col-md-7 col-lg-8 col-xl-8">
-              {{ field|add_class:"form-control" }}
+              {{ field|add_class:"form-control form-control-sm" }}
             </div>
           </div>
           {% endfor %}
