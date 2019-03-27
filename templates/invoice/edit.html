@@ -28,20 +28,20 @@
 
       <div class="form-row">
         <div class="form-group col-auto">
-          <label>{{form_invoice.invoice_number.label}}</label>
+          <label class="col-form-label-sm">{{form_invoice.invoice_number.label}}</label>
           {{form_invoice.invoice_number|add_class:"form-control form-control-sm"}}
         </div>
         <div class="form-group col-auto offset-xl-1">
-          <label>{{form_invoice.invoice_date.label}}</label>
-          {{form_invoice.invoice_date|add_class:"form-control form-control-sm"}}
+          <label class="col-form-label-sm">{{form_invoice.invoice_date.label}}</label>
+          {{form_invoice.invoice_date|add_class:"form-control form-control-sm datepicker_city"}}
         </div>
         <div class="form-group col-auto offset-xl-1">
-          <label>{{form_invoice.invoice_sale_date.label}}</label>
-          {{form_invoice.invoice_sale_date|add_class:"form-control form-control-sm"}}
+          <label class="col-form-label-sm">{{form_invoice.invoice_sale_date.label}}</label>
+          {{form_invoice.invoice_sale_date|add_class:"form-control form-control-sm datepicker_short"}}
         </div>
         <div class="form-group col-auto offset-xl-1">
-          <label>{{form_invoice.invoice_payment_date.label}}</label>
-          {{form_invoice.invoice_payment_date|add_class:"form-control form-control-sm"}}
+          <label class="col-form-label-sm">{{form_invoice.invoice_payment_date.label}}</label>
+          {{form_invoice.invoice_payment_date|add_class:"form-control form-control-sm datepicker"}}
         </div>
       </div>
 

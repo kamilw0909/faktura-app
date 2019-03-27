@@ -9,7 +9,7 @@
   <div class="header">
     <p>
       Faktura nr {{ invoice.invoice_number }}<br><br>
-      Data wystawienia: {{ invoice.invoice_date}}<br>
+      Data wystawienia: {{ invoice.invoice_date|capfirst}}<br>
       Data sprzedaży: {{ invoice.invoice_sale_date }}<br>
       Termin płatności: {{ invoice.invoice_payment_date|date:'Y-m-d' }}<br>
       Płatność: {{ invoice.payment }}
