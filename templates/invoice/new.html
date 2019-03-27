@@ -65,7 +65,6 @@
       {% for form in formset_item.forms %}
 
         {% if forloop.first %}
-          {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
           <div class="form-row mt-2">
             <div class="form-group d-none d-md-block col-12 col-sm-12 col-md-5 col-xl-6"><label>{{form.product.label}}</label></div>
             <div class="w-100 d-none d-sm-block d-md-none"></div>
@@ -76,6 +75,7 @@
         {% endif %}
 
         <div class="form-row item_row">
+          {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %}
           <div class="form-group col-12 col-sm-12 col-md-5 col-xl-6">
             <label class="d-md-none">{{form.product.label}}</label>
             {{ form.product|add_class:"form-control form-control-sm" }}

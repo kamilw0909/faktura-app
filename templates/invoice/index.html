@@ -41,8 +41,8 @@
           </td>
           <td>{{ invoice.invoice_sum }}zł</td>
           <td>{{ invoice.invoice_b_fk.name }}</td>
-          <td>{{ invoice.invoice_sale_date|date:'d-m-Y' }}</td>
-          <td>{{ invoice.invoice_payment_date|date:'d-m-Y' }}</td>
+          <td>{{ invoice.invoice_date }}</td>
+          <td>{{ invoice.invoice_payment_date|date:'Y-m-d' }}</td>
           <td>
             {% for item in invoice.item_set.all %}
             <small>{{ item }},</small>
