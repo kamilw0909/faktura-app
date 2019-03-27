@@ -1,3 +1,6 @@
+from django.core.serializers import serialize
+import json
+
 def konwertuj(lista):
     jednosci = ["zero", "jeden", "dwa", "trzy", "cztery", "pięć", "sześć",
                 "siedem", "osiem", "dziewięć"]
@@ -106,6 +109,18 @@ def invoice_sum_to_word(invoice):
     return zlotowki, grosze
 
 
-if __name__ == "__main__":
-    kwota = input('Podaj liczbę: ')
-    print(main(kwota))
+# invoice duplicate
+def copy_items(invoice):
+
+    c_items = []
+    obj_list = serialize('json', list(invoice.item_set.all()),
+                         fields=('product', 'quantity', 'price', 'unit'))
+    json_data = json.loads(obj_list)
+
+    for list_obj in json_data:
+        c_items.append(list_obj['fields'])
+
+    return c_items
+
+
+

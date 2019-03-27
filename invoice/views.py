@@ -10,7 +10,7 @@ from django.urls import reverse
 import weasyprint
 import datetime
 
-from .to_word import invoice_sum_to_word
+from .utylity import invoice_sum_to_word, copy_items
 from .models import Invoice
 from .forms import InvoiceForm, ItemFormSet, BuyerForm
 
@@ -84,14 +84,15 @@ def new_invoice(request):
 @login_required
 def copied_invoice(request, invoice_id):
     invoice = get_object_or_404(Invoice, pk=invoice_id)
+    copied_items = copy_items(invoice)
     invoice.pk = None
     invoices = Invoice.objects.filter(invoice_s_fk__user__username=request.user.username)
     nums = [0]
     for i in invoices:
         nums.append(int(i.invoice_number.split('/')[0]))
     form_invoice = InvoiceForm(instance=invoice, initial={'invoice_number': '{:02d}/{}'.format(max(nums)+1, datetime.datetime.now().strftime('%Y'))})
-    formset_item = ItemFormSet(instance=invoice)
     form_buyer = BuyerForm(instance=invoice)
+    formset_item = ItemFormSet(initial=copied_items)
     return render(request,
                   'invoice/new.html',
                   {'form_invoice': form_invoice, 'formset_item': formset_item,
