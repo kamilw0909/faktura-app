@@ -1,0 +1,99 @@
+@page {
+    size: Letter;
+    margin: 1cm;
+}
+
+body {
+    font-family: helvetica,"lucida grande","lucida sans unicode";
+    font-size: 80%;
+    font-weight: lighter
+}
+
+.fontUp {
+    font-size: 110%;
+    font-weight: bold;
+}
+
+.header, .services {
+    margin:1%;
+}
+
+.sidesData:after, .comments:after, .summary:after {
+    display: block;
+    content: '';
+    clear: both;
+}
+
+hr {
+    width: 98%;
+}
+
+.side {
+    float: left;
+    width: 46%;
+    margin: 2%;
+}
+
+.side p {
+    margin: 1%;
+    padding: 0%;
+}
+
+table {
+    border-collapse: collapse;
+    table-layout: initial;
+    width: 98%;
+}
+
+th, td {
+    border-bottom: 1px solid #aaaeb5;
+}
+
+tr.withoutBorder td {
+    border-bottom: none;
+}
+
+.textLeft {
+    padding-right: 2%;
+    width: 48%;
+    vertical-align: text-top;
+}
+
+.textRight {
+    text-align: right;
+    padding-right: 2%;
+    width: 13%;
+    vertical-align: text-top;
+}
+
+.LPColumn {
+    width: 3%;
+    padding-right: 2%;
+    vertical-align: text-top;
+}
+
+.summaryHeader, .commentHeader {
+    float: left;
+    width: 19%;
+    margin: 1%;
+}
+
+.summaryContent, .commentContent {
+    float: left;
+    width: 74%;
+    margin: 1%;
+}
+
+.commentAdd {
+    font-size: 70%;
+}
+
+.signature {
+    float: right;
+    width: 23%;
+    margin: 2%;
+}
+
+.signature p {
+    font-weight: bold;
+}
