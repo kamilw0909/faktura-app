@@ -118,5 +118,5 @@ def download(request, invoice_id):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'filename="faktura_{}.pdf"'.format(invoice.id)
     weasyprint.HTML(string=html).write_pdf(response,
-                                           stylesheets=[weasyprint.CSS(settings.STATIC_ROOT + 'pdf.css')])
+                                           stylesheets=[weasyprint.CSS(settings.STATIC_ROOT + '/pdf.css')])
     return response
