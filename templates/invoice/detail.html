@@ -17,10 +17,10 @@
 
 {% block content %}
 
-<div class="row mt-5">
+<div class="row mt-5 ml-3">
 
   {% if messages %}
-    <div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-10">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-9">
       {% for message in messages %}
         <div class="alert alert-{{ message.tags }} alert-dismissible fade show d-print-none" role="alert">
           <strong>{{ message|safe }}</strong>
@@ -35,7 +35,7 @@
   <div class="col">
     <!-- wiersz z danymi faktury -->
       <div class="row">
-        <div class="col-12">
+        <div class="col-12 col-lg-10 col-xl-9">
           <p>
             Faktura nr {{ invoice.invoice_number }}
             <br>
@@ -47,13 +47,14 @@
             <br>
             Płatność: {{ invoice.payment }}
           </p>
+          <hr>
         </div>
       </div>
-      <hr>
+
   <!-- wiersz sprzedawcy i kupującego -->
       <div class="row">
     <!-- kolumna sprzedawcy -->
-        <div class="col-sm-12 col-md-6">
+        <div class="col-sm-12 col-md-6 col-lg-5 col-xl-4">
           <p>
             <strong>Sprzedawca</strong>
             <br>
@@ -71,7 +72,7 @@
           </p>
         </div>
     <!-- kolumna kupującego -->
-        <div class="col-sm-12 col-md-6">
+        <div class="col-sm-12 col-md-6 col-lg-5 col-xl-4 offset-xl-1">
           <p>
             <strong>Nabywca</strong>
             <br>
@@ -87,7 +88,7 @@
       </div>
 <!-- tabela z usługami -->
 <div class="row mr-2 ml-2">
-  <div class="col-12 col-lg-10">
+  <div class="col-12 col-lg-10 col-xl-9">
     <div class="form-group row">
       <div class="table-responsive">
         <table class="table table-hover table-sm">
@@ -97,7 +98,6 @@
               <th scope="col">Nazwa</th>
               <th scope="col">Ilość</th>
               <th scope="col">Cena</th>
-              <th scope="col">Jednostka</th>
               <th scope="col">Wartość</th>
             </tr>
           </thead>
@@ -106,21 +106,18 @@
             <tr>
               <td scope="row">{{ forloop.counter }}.</td>
               <td>{{ item.product }}</td>
-              <td>{{ item.quantity }}</td>
+              <td>{{ item.quantity }} {{ item.unit }}</td>
               <td>{{ item.price }}zł</td>
-              <td>{{ item.unit }}</td>
-              <td>
-                {{ item.item_sum }}zł
-              </td>
+              <td>{{ item.item_sum }}zł</td>
             </tr>
             {% endfor %}
             <tr>
-              <td colspan="3"><td>
+              <td colspan="2"><td>
               <td class="text-right">Razem:</td>
               <td><strong>{{ invoice.invoice_sum }}zł</strong></td>
             </tr>
             <tr>
-              <td colspan="3"><td>
+              <td colspan="2"><td>
               <td class="text-right">Wartość:</td>
               <td><strong>{{ invoice.invoice_sum }}PLN</strong></td>
             </tr>
@@ -132,10 +129,10 @@
 </div>
     <!-- wiersz uwagi -->
       <div class="row">
-        <div class="col-12 col-md-2">
+        <div class="col-12 col-md-2 col-xl-1">
           <p><strong>Uwagi:</strong></p>
         </div>
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-md-8 col-xl-8">
             <p>{{ invoice.comments }}</p>
             <p><small>Sprzedawca zwolniony podmiotowo z podatku od towarów i usług.
                 Dostawa towarów lub świadczenie usług zwolnione na podstawie art. 113 ust. 1 (albo ust. 9)
@@ -146,17 +143,17 @@
       </div>
     <!-- wiersz do zapłaty -->
     <div class="row">
-        <div class="col-12 col-md-2">
+        <div class="col-12 col-md-2 col-xl-1">
           <p><strong>Do zapłaty:</strong></p>
         </div>
-        <div class="col-12 col-md-9">
+        <div class="col-12 col-md-8 col-xl-8">
             <p>{{ invoice.invoice_sum }}zł</p>
             <p>Słownie: {{ zlotowki }} zł {{ grosze }} gr</p>
           </div>
       </div>
     <!-- wiersz podpis -->
         <div class="row justify-content-end">
-            <div class="col-6 col-sm-4 col-md-3">
+            <div class="col-6 col-sm-4 col-md-3 col-xl-5">
               <strong>Imię i nazwisko:</strong>
               <br>
               {{invoice.sign}}
