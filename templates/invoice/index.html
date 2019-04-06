@@ -5,16 +5,16 @@
 {% block content %}
 <div class="row mt-5">
   {% if messages %}
-  <div class="col-12 col-sm-12 col-md-12 col-lg-9 col-xl-10">
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible fade show d-print-none" role="alert">
-      <strong>{{ message|safe }}</strong>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          <strong>{{ message|safe }}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
   {% endif %}
   <div class="col">
     <h1 class="display-4">Moje faktury</h1>
